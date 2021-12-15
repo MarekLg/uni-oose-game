@@ -1,13 +1,18 @@
 import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.ImageObject;
+import name.panitz.game.framework.KeyCode;
 import name.panitz.game.framework.Vertex;
+import scripts.CharacterObject;
+import scripts.InputController;
+import scripts.IsometricImage;
+import scripts.ScaledImageObject;
+import scripts.Vector;
 
 public class Game<I, S> extends AbstractGame<I, S> {
 
 	public Game() {
-		super(new ImageObject<>("assets/character/Male_0_Idle0.png", new Vertex(200, 200)), 800, 600);
-		// TODO Auto-generated constructor stub
+		super(CreatePlayer(), 1600, 900);
 	}
 
 	@Override
@@ -16,4 +21,30 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	}
 
+	@Override
+	public void keyPressedReaction(KeyCode keycode) {
+		InputController.INSTANCE.pressed(keycode);
+	}
+
+	@Override
+	public void keyReleasedReaction(KeyCode keycode) {
+		InputController.INSTANCE.released(keycode);
+	}
+
+	@Override
+	public void move() {
+		if (InputController.INSTANCE.shouldChange())
+			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalized());
+
+		super.move();
+	}
+
+	private static <I> CharacterObject<I> CreatePlayer() {
+		final var playerImages = new String[8];
+
+		for (var i = 0; i < 8; i++)
+			playerImages[i] = String.format("sprites/player/Male_%s_Idle0.png", i);
+
+		return new CharacterObject<I>(new IsometricImage(playerImages), 0.5);
+	}
 }
