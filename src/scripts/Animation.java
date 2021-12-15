@@ -1,7 +1,5 @@
 package scripts;
 
-import java.security.DrbgParameters.Reseed;
-
 public class Animation {
 	private final IsometricImage[] frames;
 	private final int frameTime;

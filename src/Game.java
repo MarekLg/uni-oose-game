@@ -12,7 +12,6 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	@Override
 	public void doChecks() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -28,7 +27,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	@Override
 	public void move() {
 		if (InputController.INSTANCE.shouldChange())
-			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalized().scaled(2.5));
+			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalized().scaled(3));
 
 		super.move();
 	}
