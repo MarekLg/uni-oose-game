@@ -15,6 +15,25 @@ public class Vector extends Vertex {
 		return new Vector(vertex.x, vertex.y);
 	}
 
+	public void scale(double scale) {
+		if (isApproxZero())
+			return;
+
+		x *= scale;
+		y *= scale;
+	}
+
+	public Vector scaled(double scale) {
+		if (isApproxZero())
+			return new Vector(0, 0);
+
+		final var result = new Vector(x, y);
+
+		result.scale(scale);
+
+		return result;
+	}
+
 	public void normalize() {
 		if (isApproxZero())
 			return;

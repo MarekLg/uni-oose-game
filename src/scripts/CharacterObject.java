@@ -1,20 +1,21 @@
 package scripts;
 
+import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.Vertex;
 
 public class CharacterObject<I> extends ScaledImageObject<I> {
-	private IsometricImage image;
+	private final Model model;
 	private Direction direction;
 
-	public CharacterObject(IsometricImage image, double scale) {
-		super(image.getImageForDirection(Direction.NE), scale);
-		this.image = image;
+	public CharacterObject(Model model, double scale) {
+		super(model.getImageForDirection(Direction.NE), scale);
+		this.model = model;
 		direction = Direction.NE;
 	}
 
-	public CharacterObject(IsometricImage image, Vertex position, double scale) {
-		super(image.getImageForDirection(Direction.NE), position, scale);
-		this.image = image;
+	public CharacterObject(Model model, Vertex position, double scale) {
+		super(model.getImageForDirection(Direction.NE), position, scale);
+		this.model = model;
 		direction = Direction.NE;
 	}
 
@@ -25,12 +26,16 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		final var vector = Vector.fromVertex(v);
 
 		if (!vector.isApproxZero()) {
-			final var lastIntValue = direction.intValue();
-
 			direction = Direction.fromVector(vector);
+			model.setState(ModelState.WALKING);
+		} else
+			model.setState(ModelState.IDLE);
+	}
 
-			if (direction.intValue() != lastIntValue)
-				setImageFileName(image.getImageForDirection(direction));
-		}
+	@Override
+	public void paintTo(GraphicsTool<I> g) {
+		setImageFileName(model.getImageForDirection(direction));
+
+		super.paintTo(g);
 	}
 }

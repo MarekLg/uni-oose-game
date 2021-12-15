@@ -1,7 +1,7 @@
 package scripts;
 
 public class IsometricImage {
-	private String[] imageFileNames = new String[8];
+	private final String[] imageFileNames = new String[8];
 
 	public IsometricImage(String[] imageFileNames) {
 		if (imageFileNames.length == 0)
