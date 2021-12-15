@@ -1,6 +1,5 @@
 package scripts;
 
-import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.Vertex;
 
 public class CharacterObject<I> extends ScaledImageObject<I> {

@@ -1,8 +1,5 @@
 import name.panitz.game.framework.AbstractGame;
-import name.panitz.game.framework.GameObject;
-import name.panitz.game.framework.ImageObject;
 import name.panitz.game.framework.KeyCode;
-import name.panitz.game.framework.Vertex;
 import scripts.CharacterObject;
 import scripts.InputController;
 import scripts.IsometricImage;
