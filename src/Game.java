@@ -6,8 +6,6 @@ import name.panitz.game.framework.Vertex;
 import scripts.CharacterObject;
 import scripts.InputController;
 import scripts.IsometricImage;
-import scripts.ScaledImageObject;
-import scripts.Vector;
 
 public class Game<I, S> extends AbstractGame<I, S> {
 

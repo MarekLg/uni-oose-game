@@ -21,8 +21,8 @@ public class Vector extends Vertex {
 
 		final var magnitude = magnitude();
 
-		x *= magnitude;
-		y *= magnitude;
+		x /= magnitude;
+		y /= magnitude;
 	}
 
 	public Vector normalized() {
