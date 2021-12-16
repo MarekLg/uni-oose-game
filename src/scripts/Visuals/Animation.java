@@ -1,4 +1,4 @@
-package scripts;
+package scripts.Visuals;
 
 public class Animation {
 	private final IsometricImage[] frames;

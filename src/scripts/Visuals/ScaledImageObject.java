@@ -1,4 +1,4 @@
-package scripts;
+package scripts.Visuals;
 
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.ImageObject;

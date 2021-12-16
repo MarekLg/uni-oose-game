@@ -4,10 +4,10 @@ import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.Vertex;
 import scripts.Direction;
-import scripts.Model;
-import scripts.ModelState;
-import scripts.ScaledImageObject;
 import scripts.Vector;
+import scripts.Visuals.Model;
+import scripts.Visuals.ModelState;
+import scripts.Visuals.ScaledImageObject;
 
 public class CharacterObject<I> extends ScaledImageObject<I> {
 	private final Model model;

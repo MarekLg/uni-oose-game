@@ -1,4 +1,6 @@
-package scripts;
+package scripts.Visuals;
+
+import scripts.Direction;
 
 public class Model {
 

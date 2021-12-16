@@ -1,6 +1,6 @@
 package scripts.Characters;
 
-import scripts.Model;
+import scripts.Visuals.Model;
 
 public class Player<I> extends CharacterObject<I> {
 

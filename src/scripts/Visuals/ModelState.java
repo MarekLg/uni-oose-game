@@ -1,4 +1,4 @@
-package scripts;
+package scripts.Visuals;
 
 public enum ModelState {
 	IDLE,
