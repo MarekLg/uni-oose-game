@@ -36,7 +36,7 @@ public class Model {
 		return image.getImageForDirection(direction);
 	}
 
-	public static Model createModel(String prefix) {
+	public static Model createModel(String prefix, int frameTime) {
 		final var idleImages = new String[8];
 
 		for (var i = 0; i < 8; i++)
@@ -52,6 +52,6 @@ public class Model {
 			walkingAnimation[frame] = new IsometricImage(images);
 		}
 
-		return new Model(new IsometricImage(idleImages), new Animation(walkingAnimation, 7));
+		return new Model(new IsometricImage(idleImages), new Animation(walkingAnimation, frameTime));
 	}
 }
