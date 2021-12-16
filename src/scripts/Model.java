@@ -2,7 +2,7 @@ package scripts;
 
 public class Model {
 
-	private ModelState state = ModelState.WALKING;
+	private ModelState state = ModelState.IDLE;
 
 	private final IsometricImage idle;
 	private final Animation walking;
