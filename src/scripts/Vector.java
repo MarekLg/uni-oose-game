@@ -66,4 +66,38 @@ public class Vector extends Vertex {
 	public boolean isApproxZero() {
 		return magnitudeSqr() < 2 * Double.MIN_VALUE;
 	}
+
+	public Vector clamped(double max) {
+		if (max < 0)
+			throw new IllegalArgumentException();
+
+		if (magnitudeSqr() > max * max)
+			return this.normalized().scaled(max);
+
+		return this;
+	}
+
+	public static Vector negate(Vertex v) {
+		return new Vector(-v.x, -v.y);
+	}
+
+	public static Vector add(Vertex v1, Vertex v2) {
+		return new Vector(v1.x + v2.x, v1.y + v2.y);
+	}
+
+	public static Vector sub(Vertex v1, Vertex v2) {
+		return add(v1, negate(v2));
+	}
+
+	public Vector negated() {
+		return negate(this);
+	}
+
+	public Vector add(Vector other) {
+		return add(this, other);
+	}
+
+	public Vector sub(Vector other) {
+		return sub(this, other);
+	}
 }

@@ -1,5 +1,6 @@
 package scripts.Characters;
 
+import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.Vertex;
 import scripts.Direction;
@@ -30,7 +31,7 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 
 		final var vector = Vector.fromVertex(v);
 
-		if (!vector.isApproxZero()) {
+		if (vector.magnitudeSqr() > 0.001) {
 			direction = Direction.fromVector(vector);
 			model.setState(ModelState.WALKING);
 		} else
@@ -42,5 +43,13 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		setImageFileName(model.getImageForDirection(direction));
 
 		super.paintTo(g);
+	}
+
+	public static <I> Vector getCenter(GameObject<I> go) {
+		return Vector.fromVertex(go.getPos()).add(new Vector(go.getWidth() * 0.5, go.getHeight() * 0.9));
+	}
+
+	public Vector getCenter() {
+		return getCenter(this);
 	}
 }

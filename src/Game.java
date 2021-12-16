@@ -1,20 +1,26 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 
 import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.KeyCode;
 import scripts.InputController;
+import scripts.Vector;
 import scripts.Characters.Alien;
+import scripts.Characters.CharacterObject;
 import scripts.Characters.Player;
 
 public class Game<I, S> extends AbstractGame<I, S> {
 
+	private List<CharacterObject<I>> characters = new ArrayList<>();
+
 	public Game() {
 		super(new Player<>(), 1600, 900);
 
-		gos.add(new Alien<>());
+		addCharacter(new Alien<>());
 	}
 
 	@Override
@@ -37,6 +43,16 @@ public class Game<I, S> extends AbstractGame<I, S> {
 		if (InputController.INSTANCE.shouldChange())
 			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalized().scaled(3));
 
+		for (final var c : characters) {
+			final var direction = Vector.sub(
+					CharacterObject.getCenter(getPlayer()),
+					c.getCenter());
+
+			c.setVelocity(direction.magnitudeSqr() > 200
+					? direction.clamped(1)
+					: new Vector(0, 0));
+		}
+
 		super.move();
 	}
 
@@ -56,5 +72,15 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		for (final var go : objectsToPaint)
 			go.paintTo(g);
+	}
+
+	private void addCharacter(CharacterObject<I> c) {
+		gos.add(c);
+		characters.add(c);
+	}
+
+	private void addCharacters(Collection<CharacterObject<I>> cs) {
+		gos.addAll(cs);
+		characters.addAll(cs);
 	}
 }
