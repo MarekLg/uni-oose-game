@@ -93,11 +93,11 @@ public class Vector extends Vertex {
 		return negate(this);
 	}
 
-	public Vector add(Vector other) {
+	public Vector add(Vertex other) {
 		return add(this, other);
 	}
 
-	public Vector sub(Vector other) {
+	public Vector sub(Vertex other) {
 		return sub(this, other);
 	}
 }

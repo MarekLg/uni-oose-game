@@ -4,6 +4,7 @@ import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.Vertex;
 import scripts.Direction;
+import scripts.Globals;
 import scripts.Vector;
 import scripts.Visuals.Model;
 import scripts.Visuals.ModelState;
@@ -26,16 +27,17 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 	}
 
 	@Override
-	public void setVelocity(Vertex v) {
-		super.setVelocity(v);
+	public void move() {
+		final var v = ensureInBounds(Vector.fromVertex(getVelocity()));
+		setVelocity(v);
 
-		final var vector = Vector.fromVertex(v);
-
-		if (vector.magnitudeSqr() > 0.001) {
-			direction = Direction.fromVector(vector);
+		if (v.magnitudeSqr() > 0.001) {
+			direction = Direction.fromVector(v);
 			model.setState(ModelState.WALKING);
 		} else
 			model.setState(ModelState.IDLE);
+
+		super.move();
 	}
 
 	@Override
@@ -51,5 +53,23 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 
 	public Vector getCenter() {
 		return getCenter(this);
+	}
+
+	private Vector ensureInBounds(Vector v) {
+		final var toleranceX = 50;
+		final var toleranceY = 32;
+		final var pos = v.add(getPos());
+
+		if (pos.x + toleranceX < 0 && v.x < 0
+				|| pos.x + getWidth() - toleranceX > Globals.width && v.x > 0) {
+			v.x = 0;
+		}
+
+		if (pos.y + getHeight() * 0.5 + toleranceY < 0 && v.y < 0
+				|| pos.y + getHeight() - toleranceY > Globals.height && v.y > 0) {
+			v.y = 0;
+		}
+
+		return v;
 	}
 }

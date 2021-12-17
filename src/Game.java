@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -7,6 +6,7 @@ import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.KeyCode;
+import scripts.Globals;
 import scripts.InputController;
 import scripts.Vector;
 import scripts.Characters.Alien;
@@ -18,7 +18,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	private List<CharacterObject<I>> characters = new ArrayList<>();
 
 	public Game() {
-		super(new Player<>(), 1600, 900);
+		super(new Player<>(), Globals.width, Globals.height);
 
 		addCharacter(new Alien<>());
 	}
@@ -77,10 +77,5 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	private void addCharacter(CharacterObject<I> c) {
 		gos.add(c);
 		characters.add(c);
-	}
-
-	private void addCharacters(Collection<CharacterObject<I>> cs) {
-		gos.addAll(cs);
-		characters.addAll(cs);
 	}
 }
