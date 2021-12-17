@@ -6,6 +6,7 @@ import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.KeyCode;
+import scripts.EnemySpawner;
 import scripts.Globals;
 import scripts.InputController;
 import scripts.Vector;
@@ -16,16 +17,18 @@ import scripts.Characters.Player;
 public class Game<I, S> extends AbstractGame<I, S> {
 
 	private List<CharacterObject<I>> characters = new ArrayList<>();
+	private final EnemySpawner<I> spawner;
 
 	public Game() {
 		super(new Player<>(), Globals.width, Globals.height);
 
-		addCharacter(new Alien<>());
+		// TODO: tweak spawning interval, map generation
+		spawner = new EnemySpawner<>(10000, new Vector(300, 400), this::addAlien);
 	}
 
 	@Override
 	public void doChecks() {
-		// TODO Auto-generated method stub
+		spawner.Update();
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 			go.paintTo(g);
 	}
 
-	private void addCharacter(CharacterObject<I> c) {
+	private void addAlien(Alien<I> c) {
 		gos.add(c);
 		characters.add(c);
 	}
