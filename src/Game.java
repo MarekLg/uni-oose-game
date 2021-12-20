@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
@@ -19,7 +18,7 @@ import scripts.Map.MapGenerator;
 public class Game<I, S> extends AbstractGame<I, S> {
 
 	private List<GameObject<I>> mapTiles = new ArrayList<>();
-	private List<CharacterObject<I>> aliens = new ArrayList<>();
+	private List<Alien<I>> aliens = new ArrayList<>();
 	private final EnemySpawner<I> spawner;
 
 	public Game() {
