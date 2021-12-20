@@ -11,48 +11,30 @@ public class Vector extends Vertex {
 		super(x, y);
 	}
 
+	/** Shorthand for {@code new Vector(0, 0)} */
+	public static Vector zero = new Vector(0, 0);
+
+	/** Shorthand for {@code new Vector(1, 1)} */
+	public static Vector one = new Vector(1, 1);
+
+	/** Shorthand for {@code new Vector(1, 0)} */
+	public static Vector right = new Vector(1, 0);
+
+	/** Shorthand for {@code new Vector(-1, 0)} */
+	public static Vector left = new Vector(-1, 0);
+
+	/** Shorthand for {@code new Vector(0, 1)} */
+	public static Vector down = new Vector(0, 1);
+
+	/** Shorthand for {@code new Vector(0, -1)} */
+	public static Vector up = new Vector(0, -1);
+
+	/**
+	 * @param vertex {@link Vertex} to convert to {@link Vector}
+	 * @see name.panitz.game.framework.Vertex
+	 */
 	public static Vector fromVertex(Vertex vertex) {
 		return new Vector(vertex.x, vertex.y);
-	}
-
-	public void scale(double scale) {
-		if (isApproxZero())
-			return;
-
-		x *= scale;
-		y *= scale;
-	}
-
-	public Vector scaled(double scale) {
-		if (isApproxZero())
-			return new Vector(0, 0);
-
-		final var result = new Vector(x, y);
-
-		result.scale(scale);
-
-		return result;
-	}
-
-	public void normalize() {
-		if (isApproxZero())
-			return;
-
-		final var magnitude = magnitude();
-
-		x /= magnitude;
-		y /= magnitude;
-	}
-
-	public Vector normalized() {
-		if (isApproxZero())
-			return new Vector(0, 0);
-
-		final var result = new Vector(x, y);
-
-		result.normalize();
-
-		return result;
 	}
 
 	public double magnitude() {
@@ -67,37 +49,46 @@ public class Vector extends Vertex {
 		return magnitudeSqr() < 2 * Double.MIN_VALUE;
 	}
 
-	public Vector clamped(double max) {
+	public Vector scale(double scale) {
+		return new Vector(x * scale, y * scale);
+	}
+
+	public Vector scale(Vertex other) {
+		return new Vector(x * other.x, y * other.y);
+	}
+
+	public Vector normalize() {
+		if (isApproxZero())
+			return new Vector(0, 0);
+
+		final var magnitude = magnitude();
+
+		return new Vector(x / magnitude, y / magnitude);
+	}
+
+	public Vector clamp(double max) {
 		if (max < 0)
 			throw new IllegalArgumentException();
 
 		if (magnitudeSqr() > max * max)
-			return this.normalized().scaled(max);
+			return this.normalize().scale(max);
 
 		return this;
 	}
 
-	public static Vector negate(Vertex v) {
-		return new Vector(-v.x, -v.y);
-	}
-
-	public static Vector add(Vertex v1, Vertex v2) {
-		return new Vector(v1.x + v2.x, v1.y + v2.y);
-	}
-
-	public static Vector sub(Vertex v1, Vertex v2) {
-		return add(v1, negate(v2));
-	}
-
-	public Vector negated() {
-		return negate(this);
+	public Vector negate() {
+		return new Vector(-x, -y);
 	}
 
 	public Vector add(Vertex other) {
-		return add(this, other);
+		return new Vector(x + other.x, y + other.y);
 	}
 
 	public Vector sub(Vertex other) {
-		return sub(this, other);
+		return new Vector(x - other.x, y - other.y);
+	}
+
+	public double dot(Vertex other) {
+		return x * other.x + y * other.y;
 	}
 }

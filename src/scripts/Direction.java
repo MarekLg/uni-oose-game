@@ -1,13 +1,13 @@
 package scripts;
 
 public enum Direction {
-	NE(0, new Vector(1, 1).normalized()),
+	NE(0, new Vector(1, 1).normalize()),
 	E(1, new Vector(1, 0)),
-	SE(2, new Vector(1, -1).normalized()),
+	SE(2, new Vector(1, -1).normalize()),
 	S(3, new Vector(0, -1)),
-	SW(4, new Vector(-1, -1).normalized()),
+	SW(4, new Vector(-1, -1).normalize()),
 	W(5, new Vector(-1, 0)),
-	NW(6, new Vector(-1, 1).normalized()),
+	NW(6, new Vector(-1, 1).normalize()),
 	N(7, new Vector(0, 1));
 
 	public static Direction fromVector(Vector vector) {

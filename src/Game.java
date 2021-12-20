@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
@@ -13,17 +14,23 @@ import scripts.Vector;
 import scripts.Characters.Alien;
 import scripts.Characters.CharacterObject;
 import scripts.Characters.Player;
+import scripts.Map.MapGenerator;
 
 public class Game<I, S> extends AbstractGame<I, S> {
 
-	private List<CharacterObject<I>> characters = new ArrayList<>();
+	private List<GameObject<I>> mapTiles = new ArrayList<>();
+	private List<CharacterObject<I>> aliens = new ArrayList<>();
 	private final EnemySpawner<I> spawner;
 
 	public Game() {
 		super(new Player<>(), Globals.width, Globals.height);
 
-		// TODO: tweak spawning interval, map generation
-		spawner = new EnemySpawner<>(10000, new Vector(300, 400), this::addAlien);
+		GenerateMap(15, 30, 0.5);
+
+		goss.add(aliens);
+
+		// TODO: tweak spawning interval
+		spawner = new EnemySpawner<>(10000, new Vector(300, 400), aliens::add);
 	}
 
 	@Override
@@ -44,15 +51,15 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	@Override
 	public void move() {
 		if (InputController.INSTANCE.shouldChange())
-			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalized().scaled(3));
+			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalize().scale(3));
 
-		for (final var c : characters) {
-			final var direction = Vector.sub(
-					CharacterObject.getCenter(getPlayer()),
-					c.getCenter());
+		for (final var c : aliens) {
+			final var direction = Vector
+					.fromVertex(CharacterObject.getCenter(getPlayer()))
+					.sub(c.getCenter());
 
 			c.setVelocity(direction.magnitudeSqr() > 200
-					? direction.clamped(1)
+					? direction.clamp(1)
 					: new Vector(0, 0));
 		}
 
@@ -61,24 +68,28 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	@Override
 	public void paintTo(GraphicsTool<I> g) {
-		final var objectsToPaint = new ArrayList<GameObject<I>>();
+		for (final var mapTile : mapTiles)
+			mapTile.paintTo(g);
 
-		objectsToPaint.addAll(gos);
-		objectsToPaint.add(getPlayer());
+		final var objects = new ArrayList<GameObject<I>>();
 
-		objectsToPaint.sort(new Comparator<GameObject<I>>() {
+		objects.addAll(aliens);
+		objects.add(getPlayer());
+
+		objects.sort(new Comparator<GameObject<I>>() {
 			@Override
 			public int compare(GameObject<I> o1, GameObject<I> o2) {
 				return Double.compare(o1.getPos().y + o1.getHeight(), o2.getPos().y + o2.getHeight());
 			}
 		});
 
-		for (final var go : objectsToPaint)
+		for (final var go : objects)
 			go.paintTo(g);
 	}
 
-	private void addAlien(Alien<I> c) {
-		gos.add(c);
-		characters.add(c);
+	private void GenerateMap(int resolutionX, int resolutionY, double scale) {
+		mapTiles = new MapGenerator(resolutionX, resolutionY, scale).generate();
+
+		goss.add(mapTiles);
 	}
 }
