@@ -53,17 +53,20 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 	}
 
 	private Vector ensureInBounds(Vector v) {
-		final var toleranceX = 50;
-		final var toleranceY = 32;
-		final var pos = v.add(getPos());
+		final var paddingX = 12;
+		final var paddingY = 4;
+		final var pos = v.add(getCenter());
 
-		if (pos.x + toleranceX < 0 && v.x < 0
-				|| pos.x + getWidth() - toleranceX > Globals.width() && v.x > 0) {
+		final var tileWidth = Globals.isometricBaseWidth * Globals.mapScale;
+		final var tileHeight = Globals.isometricBaseHeight * Globals.mapScale;
+
+		if (pos.x - paddingX < tileWidth && v.x < 0
+				|| pos.x + paddingX > Globals.width() - tileWidth && v.x > 0) {
 			v.x = 0;
 		}
 
-		if (pos.y + getHeight() * 0.5 + toleranceY < 0 && v.y < 0
-				|| pos.y + getHeight() - toleranceY > Globals.height() && v.y > 0) {
+		if (pos.y - paddingY < tileHeight && v.y < 0
+				|| pos.y + paddingY > Globals.height() - tileHeight && v.y > 0) {
 			v.y = 0;
 		}
 
