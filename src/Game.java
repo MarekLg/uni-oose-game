@@ -74,7 +74,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	@Override
 	public void paintTo(GraphicsTool<I> g) {
-		map.paintTo(g);
+		map.paintBackgroundTo(g);
 
 		final var objects = new ArrayList<GameObject<I>>();
 
@@ -90,5 +90,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		for (final var go : objects)
 			go.paintTo(g);
+
+		map.paintForegroundTo(g);
 	}
 }

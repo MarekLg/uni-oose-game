@@ -1,30 +1,68 @@
 package scripts.Map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import scripts.CompassDirection;
 import scripts.Globals;
+import scripts.Visuals.ScaledImageObject;
 
 public class MapGenerator<I> {
 	public MapGrid<I> generate() {
 		final var tiles = generateTiles();
+		final var fences = generateFences();
 
-		return new MapGrid<I>(tiles);
+		return new MapGrid<I>(tiles, fences);
 	}
 
 	private List<MapTile<I>> generateTiles() {
 		final var tiles = new ArrayList<MapTile<I>>();
 
-		for (var y = 0; y < Globals.gridResolutionX; y++)
-			for (var x = 0; x < Globals.gridResolutionY; x++)
-				tiles.add(createMapTile(new GridPosition(x, y)));
+		for (var y = 0; y < Globals.gridResolutionY; y++)
+			for (var x = 0; x < Globals.gridResolutionX; x++)
+				tiles.add(new MapTile<I>("sprites/map/dirt_E.png", new GridPosition(x, y)));
 
 		return tiles;
 	}
 
-	private MapTile<I> createMapTile(GridPosition position) {
-		final var spriteName = String.format("sprites/map/dirt_E.png", "E");
+	// TODO: make cleaner
+	private Map<CompassDirection, List<ScaledImageObject<I>>> generateFences() {
+		final var map = new HashMap<CompassDirection, List<ScaledImageObject<I>>>();
+		final var fences = new ArrayList<ScaledImageObject<I>>();
 
-		return new MapTile<I>(spriteName, position);
+		for (var x = 1; x < Globals.gridResolutionX - 1; x++)
+			fences.add(new ScaledImageObject<I>("sprites/map/fenceLow_N.png",
+					new GridPosition(x, 0).startSprite(),
+					Globals.mapScale));
+
+		map.put(CompassDirection.N, new ArrayList<>(fences));
+		fences.clear();
+
+		for (var x = 1; x < Globals.gridResolutionX - 1; x++)
+			fences.add(new ScaledImageObject<I>("sprites/map/fenceLow_S.png",
+					new GridPosition(x, Globals.gridResolutionY - 1).startSprite(),
+					Globals.mapScale));
+
+		map.put(CompassDirection.S, new ArrayList<>(fences));
+		fences.clear();
+
+		for (var y = 1; y < Globals.gridResolutionY - 1; y++)
+			fences.add(new ScaledImageObject<I>("sprites/map/fenceLow_W.png",
+					new GridPosition(0, y).startSprite(),
+					Globals.mapScale));
+
+		map.put(CompassDirection.W, new ArrayList<>(fences));
+		fences.clear();
+
+		for (var y = 1; y < Globals.gridResolutionY - 1; y++)
+			fences.add(new ScaledImageObject<I>("sprites/map/fenceLow_E.png",
+					new GridPosition(Globals.gridResolutionX - 1, y).startSprite(),
+					Globals.mapScale));
+
+		map.put(CompassDirection.E, new ArrayList<>(fences));
+
+		return map;
 	}
 }
