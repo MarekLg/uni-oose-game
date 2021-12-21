@@ -11,22 +11,39 @@ public class Vector extends Vertex {
 		super(x, y);
 	}
 
-	/** Shorthand for {@code new Vector(0, 0)} */
+	@Override
+	public String toString() {
+		return String.format("(%.2f, %.2f)", x, y);
+	}
+
+	/**
+	 * Shorthand for {@code new Vector(0, 0)}
+	 */
 	public static Vector zero = new Vector(0, 0);
 
-	/** Shorthand for {@code new Vector(1, 1)} */
+	/**
+	 * Shorthand for {@code new Vector(1, 1)}
+	 */
 	public static Vector one = new Vector(1, 1);
 
-	/** Shorthand for {@code new Vector(1, 0)} */
+	/**
+	 * Shorthand for {@code new Vector(1, 0)}
+	 */
 	public static Vector right = new Vector(1, 0);
 
-	/** Shorthand for {@code new Vector(-1, 0)} */
+	/**
+	 * Shorthand for {@code new Vector(-1, 0)}
+	 */
 	public static Vector left = new Vector(-1, 0);
 
-	/** Shorthand for {@code new Vector(0, 1)} */
+	/**
+	 * Shorthand for {@code new Vector(0, 1)}
+	 */
 	public static Vector down = new Vector(0, 1);
 
-	/** Shorthand for {@code new Vector(0, -1)} */
+	/**
+	 * Shorthand for {@code new Vector(0, -1)}
+	 */
 	public static Vector up = new Vector(0, -1);
 
 	/**

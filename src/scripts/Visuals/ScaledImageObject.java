@@ -46,4 +46,8 @@ public class ScaledImageObject<I> extends AbstractGameObject<I> {
 		if (null != img)
 			g.drawImage(img, pos.x, pos.y, (int) getWidth(), (int) getHeight());
 	}
+
+	public double getScale() {
+		return scale;
+	}
 }

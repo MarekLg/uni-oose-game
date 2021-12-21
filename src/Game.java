@@ -11,20 +11,28 @@ import scripts.Globals;
 import scripts.InputController;
 import scripts.Vector;
 import scripts.Characters.Alien;
-import scripts.Characters.CharacterObject;
 import scripts.Characters.Player;
 import scripts.Map.MapGenerator;
+import scripts.Map.MapGrid;
 
 public class Game<I, S> extends AbstractGame<I, S> {
 
-	private List<GameObject<I>> mapTiles = new ArrayList<>();
+	private InputController input;
+
+	private Player<I> player;
+	private MapGrid<I> map;
 	private List<Alien<I>> aliens = new ArrayList<>();
 	private final EnemySpawner<I> spawner;
 
 	public Game() {
-		super(new Player<>(), Globals.width, Globals.height);
+		super(new Player<>(), Globals.width(), Globals.height());
 
-		GenerateMap(15, 30, 0.5);
+		input = new InputController(() -> {
+		});
+
+		player = (Player<I>) getPlayer();
+
+		map = GenerateMap();
 
 		goss.add(aliens);
 
@@ -39,25 +47,24 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	@Override
 	public void keyPressedReaction(KeyCode keycode) {
-		InputController.INSTANCE.pressed(keycode);
+		input.pressed(keycode);
 	}
 
 	@Override
 	public void keyReleasedReaction(KeyCode keycode) {
-		InputController.INSTANCE.released(keycode);
+		input.released(keycode);
 	}
 
 	@Override
 	public void move() {
-		if (InputController.INSTANCE.shouldChange())
-			getPlayer().setVelocity(InputController.INSTANCE.getInput().normalize().scale(3));
+		getPlayer().setVelocity(input.getMovement().normalize().scale(3));
 
-		for (final var c : aliens) {
+		for (final var alien : aliens) {
 			final var direction = Vector
-					.fromVertex(CharacterObject.getCenter(getPlayer()))
-					.sub(c.getCenter());
+					.fromVertex(player.getCenter())
+					.sub(alien.getCenter());
 
-			c.setVelocity(direction.magnitudeSqr() > 200
+			alien.setVelocity(direction.magnitudeSqr() > 200
 					? direction.clamp(1)
 					: new Vector(0, 0));
 		}
@@ -67,8 +74,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	@Override
 	public void paintTo(GraphicsTool<I> g) {
-		for (final var mapTile : mapTiles)
-			mapTile.paintTo(g);
+		map.paintTo(g);
 
 		final var objects = new ArrayList<GameObject<I>>();
 
@@ -86,9 +92,10 @@ public class Game<I, S> extends AbstractGame<I, S> {
 			go.paintTo(g);
 	}
 
-	private void GenerateMap(int resolutionX, int resolutionY, double scale) {
-		mapTiles = new MapGenerator(resolutionX, resolutionY, scale).generate();
+	private static <I> MapGrid<I> GenerateMap() {
+		final var tiles = new MapGenerator(Globals.gridResolutionX, Globals.gridResolutionY).<I>generate();
+		final var map = new MapGrid<I>(tiles);
 
-		goss.add(mapTiles);
+		return map;
 	}
 }

@@ -1,21 +1,24 @@
 package scripts.Map;
 
+import name.panitz.game.framework.Vertex;
 import scripts.Globals;
 import scripts.Vector;
 
 public class GridPosition {
 	private int x;
 	private int y;
-	private double scale;
 
 	public GridPosition(int x, int y) {
-		this(x, y, 1.0);
-	}
-
-	public GridPosition(int x, int y, double scale) {
 		this.x = x;
 		this.y = y;
-		this.scale = scale;
+	}
+
+	// TODO: not yet working
+	public static GridPosition fromScreenPosition(Vertex screenPosition) {
+		final var x = (int) (screenPosition.x / (Globals.isometricBaseWidth * Globals.mapScale));
+		final var y = (int) (screenPosition.y / (Globals.isometricBaseHeight * Globals.mapScale));
+
+		return new GridPosition(x, y);
 	}
 
 	public int getX() {
@@ -26,27 +29,40 @@ public class GridPosition {
 		return y;
 	}
 
-	public double getScale() {
-		return scale;
+	@Override
+	public String toString() {
+		return String.format("(%d, %d)", x, y);
 	}
 
-	// public static GridPosition fromPixels(int x, int y) {
-	// // TODO
-	// }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
 
-	public Vector center() {
-		final var horizontalOffset = (y % 2) * Globals.isometricBaseWidth / 2;
-		final var centerX = x * Globals.isometricBaseWidth + horizontalOffset;
+		if (!(obj instanceof GridPosition))
+			return false;
 
-		final var centerY = y * Globals.isometricBaseHeight / 2;
+		final var other = (GridPosition) obj;
 
-		return new Vector(centerX, centerY).scale(scale);
+		return x == other.x && y == other.y;
 	}
 
-	public Vector start() {
-		final var startX = -Globals.isometricSpriteWidth / 2;
-		final var startY = -(int) (Globals.isometricSpriteHeight * 0.875);
+	/**
+	 * @return the screen position of the top left corner of the sprite
+	 */
+	public Vector startSprite() {
+		final var offset = Globals.isometricSpriteHeight - Globals.isometricBaseHeight - Globals.isometricBaseBorder;
 
-		return new Vector(startX, startY).scale(scale).add(center());
+		return startTile().add(new Vector(0, -offset * Globals.mapScale));
+	}
+
+	/**
+	 * @return the screen position of the top left corner of the tile
+	 */
+	public Vector startTile() {
+		final var startX = x * Globals.isometricBaseWidth;
+		final var startY = y * Globals.isometricBaseHeight;
+
+		return new Vector(startX, startY).scale(Globals.mapScale);
 	}
 }

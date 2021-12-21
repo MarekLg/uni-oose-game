@@ -5,16 +5,15 @@ import java.util.List;
 
 import name.panitz.game.framework.KeyCode;
 
-public enum InputController {
-	INSTANCE;
-
-	private Vector input;
-	private boolean dirty;
+public class InputController {
+	private Vector movement;
+	private Runnable actionPressed;
 	private List<KeyCode> pressedKeys;
 
-	private InputController() {
-		input = new Vector(0, 0);
-		dirty = true;
+	public InputController(Runnable actionPressed) {
+		this.actionPressed = actionPressed;
+
+		movement = new Vector(0, 0);
 		pressedKeys = new ArrayList<>();
 	}
 
@@ -24,23 +23,25 @@ public enum InputController {
 
 		switch (keycode) {
 			case RIGHT_ARROW:
-				input.move(new Vector(1, 0));
+				movement.move(new Vector(1, 0));
 				break;
 			case LEFT_ARROW:
-				input.move(new Vector(-1, 0));
+				movement.move(new Vector(-1, 0));
 				break;
 			case DOWN_ARROW:
-				input.move(new Vector(0, 1));
+				movement.move(new Vector(0, 1));
 				break;
 			case UP_ARROW:
-				input.move(new Vector(0, -1));
+				movement.move(new Vector(0, -1));
+				break;
+			case VK_SPACE:
+				actionPressed.run();
 				break;
 			default:
 				break;
 		}
 
 		pressedKeys.add(keycode);
-		dirty = true;
 	}
 
 	public void released(KeyCode keycode) {
@@ -49,35 +50,25 @@ public enum InputController {
 
 		switch (keycode) {
 			case RIGHT_ARROW:
-				input.move(new Vector(-1, 0));
+				movement.move(new Vector(-1, 0));
 				break;
 			case LEFT_ARROW:
-				input.move(new Vector(1, 0));
+				movement.move(new Vector(1, 0));
 				break;
 			case DOWN_ARROW:
-				input.move(new Vector(0, -1));
+				movement.move(new Vector(0, -1));
 				break;
 			case UP_ARROW:
-				input.move(new Vector(0, 1));
+				movement.move(new Vector(0, 1));
 				break;
 			default:
 				break;
 		}
 
 		pressedKeys.remove(keycode);
-		dirty = true;
 	}
 
-	public boolean shouldChange() {
-		if (!dirty)
-			return false;
-
-		dirty = false;
-
-		return true;
-	}
-
-	public Vector getInput() {
-		return input;
+	public Vector getMovement() {
+		return movement;
 	}
 }

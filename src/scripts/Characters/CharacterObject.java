@@ -1,6 +1,5 @@
 package scripts.Characters;
 
-import name.panitz.game.framework.GameObject;
 import name.panitz.game.framework.GraphicsTool;
 import name.panitz.game.framework.Vertex;
 import scripts.Direction;
@@ -47,12 +46,10 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		super.paintTo(g);
 	}
 
-	public static <I> Vector getCenter(GameObject<I> go) {
-		return Vector.fromVertex(go.getPos()).add(new Vector(go.getWidth() * 0.5, go.getHeight() * 0.9));
-	}
-
 	public Vector getCenter() {
-		return getCenter(this);
+		return new Vector(Globals.isometricSpriteWidth * 0.5, Globals.isometricSpriteHeight * 0.875)
+				.scale(getScale())
+				.add(getPos());
 	}
 
 	private Vector ensureInBounds(Vector v) {
@@ -61,12 +58,12 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		final var pos = v.add(getPos());
 
 		if (pos.x + toleranceX < 0 && v.x < 0
-				|| pos.x + getWidth() - toleranceX > Globals.width && v.x > 0) {
+				|| pos.x + getWidth() - toleranceX > Globals.width() && v.x > 0) {
 			v.x = 0;
 		}
 
 		if (pos.y + getHeight() * 0.5 + toleranceY < 0 && v.y < 0
-				|| pos.y + getHeight() - toleranceY > Globals.height && v.y > 0) {
+				|| pos.y + getHeight() - toleranceY > Globals.height() && v.y > 0) {
 			v.y = 0;
 		}
 
