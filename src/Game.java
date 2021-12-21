@@ -32,7 +32,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		player = (Player<I>) getPlayer();
 
-		map = GenerateMap();
+		map = new MapGenerator<I>().generate();
 
 		goss.add(aliens);
 
@@ -90,12 +90,5 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		for (final var go : objects)
 			go.paintTo(g);
-	}
-
-	private static <I> MapGrid<I> GenerateMap() {
-		final var tiles = new MapGenerator(Globals.gridResolutionX, Globals.gridResolutionY).<I>generate();
-		final var map = new MapGrid<I>(tiles);
-
-		return map;
 	}
 }

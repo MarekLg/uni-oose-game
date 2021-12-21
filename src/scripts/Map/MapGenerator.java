@@ -3,26 +3,26 @@ package scripts.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapGenerator {
-	private final int resolutionX;
-	private final int resolutionY;
+import scripts.Globals;
 
-	public MapGenerator(int resolutionX, int resolutionY) {
-		this.resolutionX = resolutionX;
-		this.resolutionY = resolutionY;
+public class MapGenerator<I> {
+	public MapGrid<I> generate() {
+		final var tiles = generateTiles();
+
+		return new MapGrid<I>(tiles);
 	}
 
-	public <I> List<MapTile<I>> generate() {
-		final var map = new ArrayList<MapTile<I>>();
+	private List<MapTile<I>> generateTiles() {
+		final var tiles = new ArrayList<MapTile<I>>();
 
-		for (var y = 0; y < resolutionY; y++)
-			for (var x = 0; x < resolutionX; x++)
-				map.add(createMapTile(new GridPosition(x, y)));
+		for (var y = 0; y < Globals.gridResolutionX; y++)
+			for (var x = 0; x < Globals.gridResolutionY; x++)
+				tiles.add(createMapTile(new GridPosition(x, y)));
 
-		return map;
+		return tiles;
 	}
 
-	private <I> MapTile<I> createMapTile(GridPosition position) {
+	private MapTile<I> createMapTile(GridPosition position) {
 		final var spriteName = String.format("sprites/map/dirt_E.png", "E");
 
 		return new MapTile<I>(spriteName, position);
