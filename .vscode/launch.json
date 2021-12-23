@@ -9,6 +9,13 @@
       "name": "Launch Main",
       "request": "launch",
       "mainClass": "Main",
+      "projectName": "oose-game_9e7f73e3"
+    },
+    {
+      "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "Main",
       "projectName": "oose-game_ff530684"
     }
   ]

@@ -37,7 +37,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 		goss.add(aliens);
 
 		// TODO: tweak spawning interval
-		spawner = new EnemySpawner<>(10000, new Vector(300, 400), aliens::add);
+		spawner = new EnemySpawner<>(1000, aliens::add);
 	}
 
 	@Override

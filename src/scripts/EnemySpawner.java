@@ -6,13 +6,11 @@ import scripts.Characters.Alien;
 
 public class EnemySpawner<I> {
 	private final int spawningInterval;
-	private final Vector spawnPosition;
 	private final Consumer<Alien<I>> onSpawn;
 	private int counter;
 
-	public EnemySpawner(int spawningInterval, Vector spawnPosition, Consumer<Alien<I>> onSpawn) {
+	public EnemySpawner(int spawningInterval, Consumer<Alien<I>> onSpawn) {
 		this.spawningInterval = spawningInterval;
-		this.spawnPosition = spawnPosition;
 		this.onSpawn = onSpawn;
 		counter = 0;
 	}
@@ -29,8 +27,14 @@ public class EnemySpawner<I> {
 
 	private void SpawnEnemy() {
 		final var enemy = new Alien<I>();
-		enemy.getPos().moveTo(spawnPosition);
+		enemy.setCenter(getRandomBorderPosition());
 
 		onSpawn.accept(enemy);
+	}
+
+	private static Vector getRandomBorderPosition() {
+		return new Vector(
+				Math.random() < 0.5 ? -32 : Globals.width() + 32,
+				Math.random() * Globals.height());
 	}
 }

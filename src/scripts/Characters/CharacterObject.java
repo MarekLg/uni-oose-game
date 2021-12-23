@@ -52,6 +52,12 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 				.add(getPos());
 	}
 
+	public void setCenter(Vector center) {
+		getPos().moveTo(center
+				.add(new Vector(-Globals.isometricSpriteWidth * 0.5, -Globals.isometricSpriteHeight * 0.875)
+						.scale(getScale())));
+	}
+
 	private Vector ensureInBounds(Vector v) {
 		final var paddingX = 12;
 		final var paddingY = 4;
