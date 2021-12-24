@@ -1,7 +1,6 @@
 package scripts.Characters;
 
 import name.panitz.game.framework.GraphicsTool;
-import name.panitz.game.framework.Vertex;
 import scripts.Direction;
 import scripts.Globals;
 import scripts.Vector;
@@ -15,12 +14,6 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 
 	public CharacterObject(Model model, double scale) {
 		super(model.getImageForDirection(Direction.NE), scale);
-		this.model = model;
-		direction = Direction.NE;
-	}
-
-	public CharacterObject(Model model, Vertex position, double scale) {
-		super(model.getImageForDirection(Direction.NE), position, scale);
 		this.model = model;
 		direction = Direction.NE;
 	}
@@ -44,6 +37,14 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		setImageFileName(model.getImageForDirection(direction));
 
 		super.paintTo(g);
+	}
+
+	public boolean touches(CharacterObject<I> other) {
+		final var center = getCenter();
+		final var otherCenter = other.getCenter();
+
+		return Math.abs(center.x - otherCenter.x) < 16.0
+				&& Math.abs(center.y - otherCenter.y) < 16.0;
 	}
 
 	public Vector getCenter() {

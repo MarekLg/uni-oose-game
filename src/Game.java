@@ -41,7 +41,20 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	@Override
 	public void doChecks() {
+		if (player.isDead())
+			return;
+
 		spawner.Update();
+
+		player.Update();
+
+		for (final var alien : aliens) {
+			if (alien.touches(player))
+				if (player.Damage())
+					System.out.println("Game Over");
+				else if (player.getHealth() >= 0)
+					System.out.println("Lives: " + player.getHealth());
+		}
 	}
 
 	@Override
@@ -56,6 +69,16 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	@Override
 	public void move() {
+		if (player.isDead()) {
+			player.setVelocity(Vector.zero);
+
+			for (final var alien : aliens)
+				alien.setVelocity(Vector.zero);
+
+			super.move();
+			return;
+		}
+
 		getPlayer().setVelocity(input.getMovement().normalize().scale(3));
 
 		for (final var alien : aliens) {
@@ -78,7 +101,9 @@ public class Game<I, S> extends AbstractGame<I, S> {
 		final var objects = new ArrayList<GameObject<I>>();
 
 		objects.addAll(aliens);
-		objects.add(getPlayer());
+
+		if (!player.isDead())
+			objects.add(getPlayer());
 
 		objects.sort(new Comparator<GameObject<I>>() {
 			@Override
