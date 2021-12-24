@@ -14,6 +14,7 @@ import scripts.Characters.Alien;
 import scripts.Characters.Player;
 import scripts.Map.MapGenerator;
 import scripts.Map.MapGrid;
+import scripts.Visuals.ScaledImageObject;
 
 public class Game<I, S> extends AbstractGame<I, S> {
 
@@ -36,7 +37,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		goss.add(aliens);
 
-		spawner = new EnemySpawner<>(1000, aliens::add);
+		spawner = new EnemySpawner<>(100, aliens::add);
 	}
 
 	@Override
@@ -48,17 +49,16 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		player.Update();
 
-		for (final var alien : aliens) {
+		for (final var alien : aliens)
 			if (alien.touches(player))
-				if (player.Damage())
-					System.out.println("Game Over");
-				else if (player.getHealth() >= 0)
-					System.out.println("Lives: " + player.getHealth());
-		}
+				player.Damage();
 	}
 
 	@Override
 	public void keyPressedReaction(KeyCode keycode) {
+		if (player.isDead() && keycode == KeyCode.VK_SPACE)
+			System.exit(0);
+
 		input.pressed(keycode);
 	}
 
@@ -116,5 +116,15 @@ public class Game<I, S> extends AbstractGame<I, S> {
 			go.paintTo(g);
 
 		map.paintForegroundTo(g);
+
+		if (player.isDead()) {
+			new ScaledImageObject<I>("sprites/ui/background.png", Math.max(Globals.width(), Globals.height()))
+					.paintTo(g);
+
+			g.setColor(0.9, 0.5, 0.45);
+			g.drawString(200, 300, 64, "Game Over");
+			g.setColor(1, 1, 1);
+			g.drawString(203, 335, 20, "Press space to close.");
+		}
 	}
 }

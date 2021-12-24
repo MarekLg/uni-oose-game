@@ -6,7 +6,7 @@ public class Health {
 	private int counter;
 
 	public Health(int initialHealth, int counterTime) {
-		if (initialHealth <= 0 || counterTime <= 0)
+		if (initialHealth < 0 || counterTime <= 0)
 			throw new IllegalArgumentException();
 
 		health = initialHealth;

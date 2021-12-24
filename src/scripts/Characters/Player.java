@@ -11,7 +11,7 @@ public class Player<I> extends CharacterObject<I> {
 	public Player() {
 		super(Model.createModel("sprites/player/Male", 7), 0.5);
 
-		health = new Health(3, 100);
+		health = new Health(0, 100);
 	}
 
 	public void Update() {
