@@ -39,7 +39,7 @@ public class UI<I> implements Paintable<I> {
 
 	private void addHeartsPanel() {
 		final var sprite = "sprites/ui/panel.png";
-		final var width = 46;
+		final var width = 47;
 		final var height = 18;
 		final var scale = 3;
 
