@@ -19,4 +19,8 @@ public class Globals {
 	public static final int height() {
 		return (int) (isometricBaseHeight * mapScale * gridResolutionY);
 	}
+
+	public static final Vector size() {
+		return new Vector(width(), height());
+	}
 }

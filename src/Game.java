@@ -14,6 +14,7 @@ import scripts.Characters.Alien;
 import scripts.Characters.Player;
 import scripts.Map.MapGenerator;
 import scripts.Map.MapGrid;
+import scripts.UI.UI;
 import scripts.Visuals.ScaledImageObject;
 
 public class Game<I, S> extends AbstractGame<I, S> {
@@ -22,6 +23,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 	private Player<I> player;
 	private MapGrid<I> map;
+	private UI<I> ui;
 	private List<Alien<I>> aliens = new ArrayList<>();
 	private final EnemySpawner<I> spawner;
 
@@ -34,6 +36,8 @@ public class Game<I, S> extends AbstractGame<I, S> {
 		player = (Player<I>) getPlayer();
 
 		map = new MapGenerator<I>().generate();
+
+		ui = new UI<I>();
 
 		goss.add(aliens);
 
@@ -51,7 +55,8 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		for (final var alien : aliens)
 			if (alien.touches(player))
-				player.Damage();
+				if (!player.Damage())
+					ui.updateLivesCount(player.getHealth());
 	}
 
 	@Override
@@ -116,6 +121,8 @@ public class Game<I, S> extends AbstractGame<I, S> {
 			go.paintTo(g);
 
 		map.paintForegroundTo(g);
+
+		ui.paintTo(g);
 
 		if (player.isDead()) {
 			new ScaledImageObject<I>("sprites/ui/background.png", Math.max(Globals.width(), Globals.height()))
