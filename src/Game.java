@@ -33,7 +33,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	private final EnemySpawner<I> spawner;
 
 	public Game() {
-		super(new Player<>(), Globals.width(), Globals.height());
+		super(new Player<>(), Globals.mapWidth(), Globals.mapHeight());
 
 		input = new InputController(this::farm);
 
@@ -133,7 +133,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 		ui.paintTo(g);
 
 		if (player.isDead()) {
-			new ScaledImageObject<I>("sprites/ui/background.png", Math.max(Globals.width(), Globals.height()))
+			new ScaledImageObject<I>("sprites/ui/background.png", Math.max(Globals.mapWidth(), Globals.mapHeight()))
 					.paintTo(g);
 
 			g.setColor(0.9, 0.5, 0.45);

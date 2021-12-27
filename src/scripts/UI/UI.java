@@ -51,7 +51,7 @@ public class UI<I> implements Paintable<I> {
 		final var height = 18;
 		final var scale = 3;
 
-		final var pos = Globals.size().sub(new Vector(width, height).scale(scale));
+		final var pos = Globals.mapSize().sub(new Vector(width, height).scale(scale));
 
 		elements.add(new ScaledImageObject<>(sprite, pos, scale));
 

@@ -73,4 +73,8 @@ public class GridPosition {
 
 		return new Vector(startX, startY).scale(Globals.mapScale);
 	}
+
+	public Vector center() {
+		return startTile().add(Globals.tileSize().scale(0.5));
+	}
 }

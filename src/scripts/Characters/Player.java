@@ -15,6 +15,7 @@ public class Player<I> extends CharacterObject<I> {
 
 		health = new Health(3, 100);
 		points = Globals.startingPoints;
+		setCenter(Globals.startingPosition);
 	}
 
 	public void Update() {

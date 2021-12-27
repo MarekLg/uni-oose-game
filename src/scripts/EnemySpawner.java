@@ -34,7 +34,7 @@ public class EnemySpawner<I> {
 
 	private static Vector getRandomBorderPosition() {
 		return new Vector(
-				Math.random() < 0.5 ? -32 : Globals.width() + 32,
-				Math.random() * Globals.height());
+				Math.random() < 0.5 ? -32 : Globals.mapWidth() + 32,
+				Math.random() * Globals.mapHeight());
 	}
 }

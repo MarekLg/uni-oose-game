@@ -68,12 +68,12 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		final var tileHeight = Globals.isometricBaseHeight * Globals.mapScale;
 
 		if (pos.x - paddingX < tileWidth && v.x < 0
-				|| pos.x + paddingX > Globals.width() - tileWidth && v.x > 0) {
+				|| pos.x + paddingX > Globals.mapWidth() - tileWidth && v.x > 0) {
 			v.x = 0;
 		}
 
 		if (pos.y - paddingY < tileHeight && v.y < 0
-				|| pos.y + paddingY > Globals.height() - tileHeight && v.y > 0) {
+				|| pos.y + paddingY > Globals.mapHeight() - tileHeight && v.y > 0) {
 			v.y = 0;
 		}
 
