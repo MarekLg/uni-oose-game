@@ -55,6 +55,13 @@ public class GridPosition {
 		return x + (tmp * tmp);
 	}
 
+	public static GridPosition random() {
+		final var x = (int) (Math.random() * (Globals.gridResolutionX - 2)) + 1;
+		final var y = (int) (Math.random() * (Globals.gridResolutionY - 2)) + 1;
+
+		return new GridPosition(x, y);
+	}
+
 	/**
 	 * @return the screen position of the top left corner of the sprite
 	 */

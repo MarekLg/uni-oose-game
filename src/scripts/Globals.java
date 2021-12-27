@@ -44,8 +44,13 @@ public class Globals {
 
 	// aliens
 	public static final int alienSpawnTime = 1000;
+	public static final double alienAgroRange = 300.0;
+	public static final double alienTargetMinDistance = 10.0;
+	public static final double alienScale = 0.7;
+	public static final double alienMaxSpeed = 1.0;
 
 	// player
 	public static final Vector startingPosition = new GridPosition(gridResolutionX / 2, gridResolutionY / 2).center();
 	public static final int startingPoints = 1;
+	public static final double playerScale = 0.5;
 }

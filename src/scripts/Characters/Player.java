@@ -11,7 +11,7 @@ public class Player<I> extends CharacterObject<I> {
 	private int timer = 5;
 
 	public Player() {
-		super(Model.createModel("sprites/player/Male", 7), 0.5);
+		super(Model.createModel("sprites/player/Male", 7), Globals.playerScale);
 
 		health = new Health(3, 100);
 		points = Globals.startingPoints;

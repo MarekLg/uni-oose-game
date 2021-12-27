@@ -93,15 +93,8 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		getPlayer().setVelocity(input.getMovement().normalize().scale(3));
 
-		for (final var alien : aliens) {
-			final var direction = Vector
-					.from(player.getCenter())
-					.sub(alien.getCenter());
-
-			alien.setVelocity(direction.magnitudeSqr() > 200
-					? direction.clamp(1)
-					: new Vector(0, 0));
-		}
+		for (final var alien : aliens)
+			alien.updateVelocity(player.getCenter());
 
 		super.move();
 	}
