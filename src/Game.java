@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import name.panitz.game.framework.AbstractGame;
 import name.panitz.game.framework.GameObject;
@@ -12,6 +14,8 @@ import scripts.InputController;
 import scripts.Vector;
 import scripts.Characters.Alien;
 import scripts.Characters.Player;
+import scripts.Map.Corn;
+import scripts.Map.GridPosition;
 import scripts.Map.MapGenerator;
 import scripts.Map.MapGrid;
 import scripts.UI.UI;
@@ -24,14 +28,14 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	private Player<I> player;
 	private MapGrid<I> map;
 	private UI<I> ui;
+	private Map<GridPosition, Corn<I>> corns = new HashMap<>();
 	private List<Alien<I>> aliens = new ArrayList<>();
 	private final EnemySpawner<I> spawner;
 
 	public Game() {
 		super(new Player<>(), Globals.width(), Globals.height());
 
-		input = new InputController(() -> {
-		});
+		input = new InputController(this::farm);
 
 		player = (Player<I>) getPlayer();
 
@@ -41,7 +45,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		goss.add(aliens);
 
-		spawner = new EnemySpawner<>(100, aliens::add);
+		spawner = new EnemySpawner<>(Globals.alienSpawnTime, aliens::add);
 	}
 
 	@Override
@@ -52,6 +56,9 @@ public class Game<I, S> extends AbstractGame<I, S> {
 		spawner.Update();
 
 		player.Update();
+
+		for (final var corn : corns.values())
+			corn.update();
 
 		for (final var alien : aliens)
 			if (alien.touches(player))
@@ -88,7 +95,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		for (final var alien : aliens) {
 			final var direction = Vector
-					.fromVertex(player.getCenter())
+					.from(player.getCenter())
 					.sub(alien.getCenter());
 
 			alien.setVelocity(direction.magnitudeSqr() > 200
@@ -105,6 +112,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 		final var objects = new ArrayList<GameObject<I>>();
 
+		objects.addAll(corns.values());
 		objects.addAll(aliens);
 
 		if (!player.isDead())
@@ -133,5 +141,26 @@ public class Game<I, S> extends AbstractGame<I, S> {
 			g.setColor(1, 1, 1);
 			g.drawString(203, 335, 20, "Press space to close.");
 		}
+	}
+
+	private void farm() {
+		final var position = GridPosition.fromScreenPosition(player.getCenter());
+
+		if (corns.containsKey(position)) {
+			final var corn = corns.get(position);
+
+			if (!corn.isDone())
+				return;
+
+			player.addPoint();
+
+			corn.reset();
+		} else if (player.removePoint()) {
+			final var tile = map.getTile(position);
+
+			corns.put(position, new Corn<I>(tile));
+		}
+
+		ui.updatePoints(player.points);
 	}
 }

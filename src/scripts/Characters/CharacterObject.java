@@ -20,7 +20,7 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 
 	@Override
 	public void move() {
-		final var v = ensureInBounds(Vector.fromVertex(getVelocity()));
+		final var v = ensureInBounds(Vector.from(getVelocity()));
 		setVelocity(v);
 
 		if (v.magnitudeSqr() > 0.001) {

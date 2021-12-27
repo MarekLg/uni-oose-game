@@ -63,15 +63,15 @@ public class MapGrid<I> {
 		paintFencesTo(g, CompassDirection.S);
 	}
 
-	public void paintFencesTo(GraphicsTool<I> g, CompassDirection direction) {
+	private void paintFencesTo(GraphicsTool<I> g, CompassDirection direction) {
 		for (final var fence : fences.get(direction))
 			fence.paintTo(g);
 	}
 
 	public MapTile<I> getTile(GridPosition position) {
-		return tiles.get(position);
-	}
+		if (!tiles.containsKey(position))
+			throw new IllegalArgumentException();
 
-	public void Update() {
+		return tiles.get(position);
 	}
 }

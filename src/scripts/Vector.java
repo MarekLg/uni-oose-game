@@ -50,7 +50,7 @@ public class Vector extends Vertex {
 	 * @param vertex {@link Vertex} to convert to {@link Vector}
 	 * @see name.panitz.game.framework.Vertex
 	 */
-	public static Vector fromVertex(Vertex vertex) {
+	public static Vector from(Vertex vertex) {
 		return new Vector(vertex.x, vertex.y);
 	}
 

@@ -47,6 +47,14 @@ public class GridPosition {
 		return x == other.x && y == other.y;
 	}
 
+	@Override
+	public int hashCode() {
+		// using bijective algorithm
+
+		int tmp = (y + ((x + 1) / 2));
+		return x + (tmp * tmp);
+	}
+
 	/**
 	 * @return the screen position of the top left corner of the sprite
 	 */
