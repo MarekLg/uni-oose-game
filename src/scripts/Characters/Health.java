@@ -14,11 +14,10 @@ public class Health {
 	}
 
 	public boolean Damage() {
-		if (counter > 0)
-			return false;
-
-		health--;
-		counter = counterTime;
+		if (counter <= 0) {
+			health--;
+			counter = counterTime;
+		}
 
 		return health < 0;
 	}
