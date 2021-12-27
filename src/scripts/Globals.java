@@ -46,7 +46,6 @@ public class Globals {
 	public static final int alienSpawnTime = 1000;
 
 	// player
-	public static final Vector startingPosition = new GridPosition(gridResolutionX / 2, gridResolutionY / 2)
-			.center();
+	public static final Vector startingPosition = new GridPosition(gridResolutionX / 2, gridResolutionY / 2).center();
 	public static final int startingPoints = 1;
 }

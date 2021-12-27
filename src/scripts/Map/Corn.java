@@ -5,6 +5,7 @@ import scripts.Visuals.ScaledImageObject;
 
 public class Corn<I> extends ScaledImageObject<I> {
 	private int phase;
+	private int harvestCount;
 	private int timer;
 
 	public Corn(MapTile<I> mapTile) {
@@ -13,6 +14,7 @@ public class Corn<I> extends ScaledImageObject<I> {
 		mapTile.setImageFileName("sprites/map/dirtFarmland_E.png");
 
 		phase = 0;
+		harvestCount = 0;
 		resetTimer();
 	}
 
@@ -27,9 +29,11 @@ public class Corn<I> extends ScaledImageObject<I> {
 		}
 	}
 
-	public void reset() {
+	public void harvest() {
 		phase = 0;
+		harvestCount++;
 		updateSprite();
+		resetTimer();
 	}
 
 	public boolean isDone() {
@@ -51,6 +55,6 @@ public class Corn<I> extends ScaledImageObject<I> {
 	}
 
 	private void resetTimer() {
-		timer = Globals.growTime;
+		timer = Globals.growTime * (int) Math.pow(2, harvestCount);
 	}
 }

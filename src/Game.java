@@ -154,7 +154,7 @@ public class Game<I, S> extends AbstractGame<I, S> {
 
 			player.addPoint();
 
-			corn.reset();
+			corn.harvest();
 		} else if (player.removePoint()) {
 			final var tile = map.getTile(position);
 
