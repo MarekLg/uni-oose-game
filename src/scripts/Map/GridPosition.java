@@ -13,7 +13,6 @@ public class GridPosition {
 		this.y = y;
 	}
 
-	// TODO: not yet working
 	public static GridPosition fromScreenPosition(Vertex screenPosition) {
 		final var x = (int) (screenPosition.x / (Globals.isometricBaseWidth * Globals.mapScale));
 		final var y = (int) (screenPosition.y / (Globals.isometricBaseHeight * Globals.mapScale));

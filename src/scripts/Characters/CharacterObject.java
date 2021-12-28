@@ -4,12 +4,14 @@ import name.panitz.game.framework.GraphicsTool;
 import scripts.Direction;
 import scripts.Globals;
 import scripts.Vector;
+import scripts.Visuals.Animation;
+import scripts.Visuals.CallbackAnimation;
+import scripts.Visuals.IsometricImage;
 import scripts.Visuals.Model;
-import scripts.Visuals.ModelState;
 import scripts.Visuals.ScaledImageObject;
 
 public class CharacterObject<I> extends ScaledImageObject<I> {
-	private final Model model;
+	protected final Model model;
 	private Direction direction;
 
 	public CharacterObject(Model model, double scale) {
@@ -20,14 +22,18 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 
 	@Override
 	public void move() {
-		final var v = ensureInBounds(Vector.from(getVelocity()));
-		setVelocity(v);
+		if (model.isPickingUp()) {
+			setVelocity(Vector.zero);
+		} else {
+			final var v = ensureInBounds(Vector.from(getVelocity()));
+			setVelocity(v);
 
-		if (v.magnitudeSqr() > 0.001) {
-			direction = Direction.fromVector(v);
-			model.setState(ModelState.WALKING);
-		} else
-			model.setState(ModelState.IDLE);
+			if (v.magnitudeSqr() > 0.001) {
+				direction = Direction.fromVector(v);
+				model.setWalking();
+			} else
+				model.setIdle();
+		}
 
 		super.move();
 	}
@@ -78,5 +84,55 @@ public class CharacterObject<I> extends ScaledImageObject<I> {
 		}
 
 		return v;
+	}
+
+	public static Model createModel(String prefix, int frameTime) {
+		final var idleImages = new String[8];
+
+		for (var i = 0; i < 8; i++)
+			idleImages[i] = String.format("%s_%s_Idle0.png", prefix, i);
+
+		final var walkingAnimation = new IsometricImage[10];
+		final var images = new String[8];
+
+		for (var frame = 0; frame < 10; frame++) {
+			for (var i = 0; i < 8; i++)
+				images[i] = String.format("%s_%s_Run%s.png", prefix, i, frame);
+
+			walkingAnimation[frame] = new IsometricImage(images);
+		}
+
+		return new Model(new IsometricImage(idleImages), new Animation(walkingAnimation, frameTime));
+	}
+
+	public static Model createModel(String prefix, int walkingFrameTime, int pickupFrameTime, int pickupCallbackFrame) {
+		final var idleImages = new String[8];
+
+		for (var i = 0; i < 8; i++)
+			idleImages[i] = String.format("%s_%s_Idle0.png", prefix, i);
+
+		final var images = new String[8];
+		final var walkingAnimation = new IsometricImage[10];
+
+		for (var frame = 0; frame < 10; frame++) {
+			for (var i = 0; i < 8; i++)
+				images[i] = String.format("%s_%s_Run%s.png", prefix, i, frame);
+
+			walkingAnimation[frame] = new IsometricImage(images);
+		}
+
+		final var pickupAnimation = new IsometricImage[10];
+
+		for (var frame = 0; frame < 10; frame++) {
+			for (var i = 0; i < 8; i++)
+				images[i] = String.format("%s_%s_Pickup%s.png", prefix, i, frame);
+
+			pickupAnimation[frame] = new IsometricImage(images);
+		}
+
+		return new Model(
+				new IsometricImage(idleImages),
+				new Animation(walkingAnimation, walkingFrameTime),
+				new CallbackAnimation(pickupAnimation, pickupFrameTime, pickupCallbackFrame));
 	}
 }

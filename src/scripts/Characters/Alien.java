@@ -3,7 +3,6 @@ package scripts.Characters;
 import scripts.Globals;
 import scripts.Vector;
 import scripts.Map.GridPosition;
-import scripts.Visuals.Model;
 
 public class Alien<I> extends CharacterObject<I> {
 
@@ -11,7 +10,7 @@ public class Alien<I> extends CharacterObject<I> {
 	private boolean initialTargetReached;
 
 	public Alien() {
-		super(Model.createModel("sprites/alien/Human", 21), Globals.alienScale);
+		super(createModel("sprites/alien/Human", 21), Globals.alienScale);
 
 		initialTarget = GridPosition.random().center();
 		initialTargetReached = false;

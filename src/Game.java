@@ -35,9 +35,9 @@ public class Game<I, S> extends AbstractGame<I, S> {
 	public Game() {
 		super(new Player<>(), Globals.mapWidth(), Globals.mapHeight());
 
-		input = new InputController(this::farm);
-
 		player = (Player<I>) getPlayer();
+
+		input = new InputController(() -> player.animateAction(this::farm));
 
 		map = new MapGenerator<I>().generate();
 

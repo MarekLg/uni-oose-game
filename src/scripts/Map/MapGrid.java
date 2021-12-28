@@ -41,18 +41,6 @@ public class MapGrid<I> {
 		for (final var tile : tiles.values())
 			tile.paintTo(g);
 
-		// g.setColor(0.62, 0.45, 0.3); // TODO: maybe black with low alpha better
-
-		// for (var gridX = 0; gridX < Globals.gridResolutionX; gridX++) {
-		// final var x = gridX * Globals.isometricBaseWidth * Globals.mapScale;
-		// g.drawLine(x, 0, x, Globals.height());
-		// }
-
-		// for (var gridY = 0; gridY < Globals.gridResolutionY; gridY++) {
-		// final var y = gridY * Globals.isometricBaseHeight * Globals.mapScale;
-		// g.drawLine(0, y, Globals.width(), y);
-		// }
-
 		paintFencesTo(g, CompassDirection.N);
 		paintFencesTo(g, CompassDirection.W);
 		paintFencesTo(g, CompassDirection.E);

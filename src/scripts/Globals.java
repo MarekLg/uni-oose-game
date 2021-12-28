@@ -53,4 +53,5 @@ public class Globals {
 	public static final Vector startingPosition = new GridPosition(gridResolutionX / 2, gridResolutionY / 2).center();
 	public static final int startingPoints = 1;
 	public static final double playerScale = 0.5;
+	public static final int playerInvincibleTime = 100;
 }

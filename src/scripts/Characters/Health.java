@@ -2,29 +2,29 @@ package scripts.Characters;
 
 public class Health {
 	private int health;
-	private final int counterTime;
-	private int counter;
+	private final int invincibleTime;
+	private int invincibleCounter;
 
-	public Health(int initialHealth, int counterTime) {
-		if (initialHealth < 0 || counterTime <= 0)
+	public Health(int initialHealth, int invincibleTime) {
+		if (initialHealth < 0 || invincibleTime <= 0)
 			throw new IllegalArgumentException();
 
 		health = initialHealth;
-		this.counterTime = counterTime;
+		this.invincibleTime = invincibleTime;
 	}
 
 	public boolean Damage() {
-		if (counter <= 0) {
+		if (invincibleCounter <= 0) {
 			health--;
-			counter = counterTime;
+			invincibleCounter = invincibleTime;
 		}
 
 		return health < 0;
 	}
 
 	public void Update() {
-		if (counter > 0)
-			counter--;
+		if (invincibleCounter > 0)
+			invincibleCounter--;
 	}
 
 	public int getHealth() {
@@ -32,6 +32,6 @@ public class Health {
 	}
 
 	public boolean isCounting() {
-		return counter > 0;
+		return invincibleCounter > 0;
 	}
 }

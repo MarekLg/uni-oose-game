@@ -2,7 +2,6 @@ package scripts.Characters;
 
 import name.panitz.game.framework.GraphicsTool;
 import scripts.Globals;
-import scripts.Visuals.Model;
 
 public class Player<I> extends CharacterObject<I> {
 
@@ -11,9 +10,9 @@ public class Player<I> extends CharacterObject<I> {
 	private int timer = 5;
 
 	public Player() {
-		super(Model.createModel("sprites/player/Male", 7), Globals.playerScale);
+		super(createModel("sprites/player/Male", 7, 4, 3), Globals.playerScale);
 
-		health = new Health(3, 100);
+		health = new Health(3, Globals.playerInvincibleTime);
 		points = Globals.startingPoints;
 		setCenter(Globals.startingPosition);
 	}
@@ -64,5 +63,9 @@ public class Player<I> extends CharacterObject<I> {
 
 	public void addPoint() {
 		points++;
+	}
+
+	public void animateAction(Runnable action) {
+		model.setPickup(action);
 	}
 }
