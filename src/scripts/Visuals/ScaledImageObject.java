@@ -27,6 +27,9 @@ public class ScaledImageObject<I> extends AbstractGameObject<I> {
 	}
 
 	public void setImageFileName(String imageFileName) {
+		if (imageFileName.equals(this.imageFileName))
+			return;
+
 		this.imageFileName = imageFileName;
 		changed = true;
 	}
